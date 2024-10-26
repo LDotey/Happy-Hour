@@ -75,3 +75,32 @@ class Alcohol:
 
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
+
+    @classmethod
+    def create(cls, type_of, brand, proof):
+        alcohol = cls(type_of, brand, proof)
+        alcohol.save()
+        return alcohol
+    
+    def update(self):
+        sql = '''
+            UPDATE alcohols
+            SET type_of =?, brand = ?, proof = ?
+            WHERE id = ?
+            '''
+        CURSOR.execute(sql, (self.type_of, self.brand, self.proof))
+        CONN.commit()
+
+    def delete(self):
+        sql = '''
+            DELETE FROM alcohols
+            WHERE id = ?
+            '''
+        
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+
+        self.id = None
