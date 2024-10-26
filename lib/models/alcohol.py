@@ -3,6 +3,7 @@ from models.__init__ import CURSOR, CONN
 
 class Alcohol:
 
+    all = {}
 
     def __init__(self, type_of, brand, proof, id = None):
         self.id = id
@@ -42,3 +43,23 @@ class Alcohol:
             self._proof = proof
         else:
             raise ValueError("Proof must be a number between 1 and 200")
+        
+    @classmethod
+    def create_table(cls):
+        sql = '''
+            CREATE TABLE IF NOT EXISTS alcohols (
+            id INTEGER PRIMARY KEY, 
+            type_of TEXT
+            brand TEXT
+            proof INTEGER)
+            '''
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        sql = '''
+            DROP TABLE IF EXISTS alcohols;
+            '''
+        CURSOR.execute(sql)
+        CONN.commit()
