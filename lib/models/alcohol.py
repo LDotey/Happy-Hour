@@ -63,3 +63,15 @@ class Alcohol:
             '''
         CURSOR.execute(sql)
         CONN.commit()
+
+    def save(self):
+        sql = '''
+            INSERT INTO alcohols (type_of, brand, proof)
+            VALUES (?, ?, ?)
+            '''
+        
+        CURSOR.execute(sql, (self.type_of, self.brand, self.proof))
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
