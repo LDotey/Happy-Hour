@@ -118,3 +118,15 @@ class Alcohol:
             alcohol.id = row[0]
             cls.all[alcohol.id] = alcohol
         return alcohol
+    
+    @classmethod
+    def get_all(cls):
+        sql = '''
+            SELECT *
+            FROM alcohols
+            '''
+        
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+    
