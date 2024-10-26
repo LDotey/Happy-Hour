@@ -104,3 +104,17 @@ class Alcohol:
         del type(self).all[self.id]
 
         self.id = None
+
+    @classmethod
+    def instance_from_db(cls, row):
+
+        alcohol = cls.all.get(row[0])
+        if alcohol:
+            alcohol.type_of = row[1]
+            alcohol.brand = row[2]
+            alcohol.proof = row[3]
+        else:
+            alcohol = cls(row[1], row[2], row[3])
+            alcohol.id = row[0]
+            cls.all[alcohol.id] = alcohol
+        return alcohol
