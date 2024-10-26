@@ -141,3 +141,14 @@ class Alcohol:
         row = CURSOR.execute(sql, (id, )).fetchone()
         return cls.instance_from_db(row) if row else None
     
+    @classmethod
+    def find_by_type_of(cls, type_of):
+        sql = '''
+            SELECT *
+            FROM alcohols
+            WHERE type_of is ?
+            '''
+        
+        row = CURSOR.execute(sql, (type_of,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
