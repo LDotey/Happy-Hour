@@ -114,3 +114,30 @@ class Cocktail:
         # Set the id to None
         self.id = None
 
+    @classmethod
+    def create(cls, name, ingredients, method, alcohol_id):
+        # initialize a new Cocktail instance and save the object to the database
+        cocktail = cls(name, ingredients, method, alcohol_id)
+        cocktail.save()
+        return cocktail
+    
+    @classmethod
+    def instance_from_db(cls, row):
+        # return a Cocktail object having the attribute values from the table row
+        # Check the dictionary for existing instance using the row's PK
+        cocktail = cls.all.get(row[0])
+        if cocktail:
+            # ensure attributes match row values in case local instance was modified
+            cocktail.name = row[1]
+            cocktail.ingredients = row[2]
+            cocktail.method = row[3]
+            cocktail.alcohol_id = row[4]
+        else:
+            # not in dictionary, create new instance and add to dictionary
+            cocktail = cls(row[1], row[2], row[3],row[4])
+            cocktail.id = row[0]
+            cls.all[cocktail.id] = cocktail
+        return cocktail
+
+
+        
