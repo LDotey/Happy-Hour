@@ -52,8 +52,14 @@ def menu():
     print("2. Add an alcohol")
     print("3. Delete an alcohol")
     print("4. Update an alcohol")
-    print("5. ")
-    print("6. ")
+    print("5. List all cocktails")
+    print("6. List all cocktails by alcohol type")
+    print("7. Add a cocktail")
+    print("8. Delete a cocktail")
+    print("9. Update a cocktail")
+
+
+
 
 
 if __name__ == "__main__":
