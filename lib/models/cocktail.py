@@ -53,3 +53,29 @@ class Cocktail:
     def alcohol_id(self, alcohol_id):
         if type(alcohol_id) is int and Alcohol.find_by_id(alcohol_id):
             self._alcohol_id = alcohol_id
+        else:
+            raise ValueError("Alcohol_id must reference an alcohol in the database")
+        
+    @classmethod
+    def create_table(cls):
+        """Create a new table to persist the attributes of Cocktail instances"""
+        sql = '''
+            CREATE TABLE IF NOT EXISTS cocktails
+            id INTEGER PRIMARY KEY,
+            name TEXT, 
+            ingredients TEXT, 
+            method TEXT
+            alcohol_id INTEGER, 
+            FOREIGN KEY (alcohol_id) REFERENCES alcohols(id)
+            '''
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        """Drop the table that persists Cocktail instances"""
+        sql = '''
+            DROP TABLE IF EXISTS cocktails
+            '''
+        CURSOR.execute(sql)
+        CONN.commit()
