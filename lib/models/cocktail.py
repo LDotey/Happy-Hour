@@ -79,4 +79,38 @@ class Cocktail:
             '''
         CURSOR.execute(sql)
         CONN.commit()
-        
+
+    def save(self):
+        sql = '''
+            INSERT INTO cocktails (name, ingredients, method, alcohol_id)
+            VALUES (?, ?, ?, ?)
+            '''
+        CURSOR.execute(sql, (self.name, self.ingredients, self.method, self.alcohol_id))
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+
+    def update(self):
+        sql = '''
+            UPDATE cocktails
+            SET name = ?, ingredients = ?, method = ?, alcohol_id = ?
+            WHERE id = ?
+            '''
+        CURSOR.execute(sql, (self.name, self.ingredients, self.method, self.alcohol_id, self.id))
+        CONN.commit()
+
+    def delete(self):
+        sql = '''
+            DELETE FROM cocktails
+            WHERE id = ?
+            '''
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+
+        # Set the id to None
+        self.id = None
+
