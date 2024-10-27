@@ -2,11 +2,17 @@
 
 from helpers import (
     exit_program,
-    helper_1,
+    # helper_1,
     list_all_alcohols,
     add_an_alcohol,
     delete_an_alcohol, 
-    update_an_alcohol
+    update_an_alcohol, 
+    list_all_cocktails,
+    list_all_cocktails_by_alcohol, 
+    get_cocktails_by_alcohol,
+    add_a_cocktail,
+    delete_a_cocktail,
+    update_a_cocktail
 )
 
 
@@ -24,6 +30,16 @@ def main():
             delete_an_alcohol()
         elif choice == "4":
             update_an_alcohol()
+        elif choice == "5":
+            list_all_cocktails()
+        elif choice == "6":
+            list_all_cocktails_by_alcohol()
+        elif choice == "7":
+            add_a_cocktail()
+        elif choice == "8":
+            delete_a_cocktail()
+        elif choice == "9":
+            update_a_cocktail()
 
         else:
             print("Invalid choice")
