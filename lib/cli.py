@@ -9,6 +9,7 @@ from helpers import (
     update_an_alcohol, 
     list_all_cocktails,
     list_all_cocktails_by_alcohol, 
+    list_cocktails_for_selected_alcohol,
     get_cocktails_by_alcohol,
     add_a_cocktail,
     delete_a_cocktail,
@@ -33,7 +34,7 @@ def main():
         elif choice == "5":
             list_all_cocktails()
         elif choice == "6":
-            list_all_cocktails_by_alcohol()
+            list_cocktails_for_selected_alcohol()
         elif choice == "7":
             add_a_cocktail()
         elif choice == "8":

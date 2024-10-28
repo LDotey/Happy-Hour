@@ -16,6 +16,9 @@ def list_all_alcohols():
     all_alcohols = Alcohol.get_all()
     for i, alcohol in enumerate(all_alcohols, start=1):
         print(f"{i}. {alcohol.type_of} | Brand: {alcohol.brand} | Proof: {alcohol.proof}%")
+    return all_alcohols
+
+
 
 # def find_alcohol_by_type():
 #     type_of = input("Enter the type of alcohol: ")
@@ -24,7 +27,7 @@ def list_all_alcohols():
 #         f"Alcohol {type_of} not found")
     
 
-def add_an_alcohol(type_of, brand, proof):
+def add_an_alcohol():
     type_of = input("Please enter a type of alcohol: ")
     brand = input("Please enter the brand name of alcohol: ")
     # proof = input("Please enter the proof or percentage of alcohol: ")
@@ -42,7 +45,7 @@ def add_an_alcohol(type_of, brand, proof):
     
     print(f"{type_of} has now been added to the Alcohol list")
 
-def delete_an_alcohol(type_of):
+def delete_an_alcohol():
     all_alcohols = Alcohol.get_all()
     list_all_alcohols()
 
@@ -57,7 +60,7 @@ def delete_an_alcohol(type_of):
     except ValueError:
         print("Invalid selection. Please try again.")
 
-def update_an_alcohol(proof):
+def update_an_alcohol():
     all_alcohols = Alcohol.get_all()
     list_all_alcohols()
 
@@ -70,13 +73,19 @@ def update_an_alcohol(proof):
 
     if selected_alcohol:
         try:
+            type_of = input("Please enter the updated type of alcohol: ")
+            brand = input("Please enter the updated brand: ")
             proof = int(input("Please enter the updated proof: "))
         except ValueError:
             print("Proof must be a number")
             return
     
+        selected_alcohol.type_of = type_of
+        selected_alcohol.brand = brand
         selected_alcohol.proof = proof
         selected_alcohol.update()
+        print(f"{selected_alcohol.type_of} has been updated successfully!")
+
 
     else:
         print("Alcohol not found. Please try again")
@@ -85,8 +94,12 @@ def update_an_alcohol(proof):
 
 def list_all_cocktails():
     all_cocktails = Cocktail.get_all()
-    for i, cocktail in enumerate(all_cocktails, start=1):
-        print(f"{i}. {cocktail.name}")
+    if all_cocktails:
+        for i, cocktail in enumerate(all_cocktails, start=1):
+            print(f"{i}. {cocktail.name}")
+    else:
+        print("No cocktails found")
+    return all_cocktails
 
 
 def list_all_cocktails_by_alcohol(alcohol_id):
@@ -103,8 +116,18 @@ def get_cocktails_by_alcohol(alcohol_id):
         print(f"Cocktails: ")
         for i, cocktail in enumerate(all_cocktails, start = 1):
             print(f"{i}. {cocktail.name} | {cocktail.ingredients} | {cocktail.method}")
-        else:
-            print(f"No cocktails found with this alcohol")
+    else:
+         print(f"No cocktails found with this alcohol")
+
+def list_cocktails_for_selected_alcohol():
+    all_alcohols = list_all_alcohols()  # Get the list of alcohols
+    try:
+        alcohol_choice = int(input("Select which alcohol you'd like to see the cocktails of: "))
+        selected_alcohol = all_alcohols[alcohol_choice - 1]  # Get the selected alcohol
+        list_all_cocktails_by_alcohol(selected_alcohol.id)  # Use the alcohol_id
+    except (IndexError, ValueError):
+        print("Invalid selection. Please try again.")
+
 
 def add_a_cocktail():
     list_all_alcohols()
@@ -148,7 +171,7 @@ def delete_a_cocktail():
     except(ValueError, IndexError):
         print("Invalid selection. Please try again.")
 
-def update_a_cocktail(name, ingredients, method):
+def update_a_cocktail():
     all_cocktails = list_all_cocktails()
 
     try:
@@ -158,11 +181,9 @@ def update_a_cocktail(name, ingredients, method):
         print("Invalid selection. Please try again.")
         return
     try:
-        update_name = input(f"Please update the name of {selected_cocktail.name}")
-        update_ingredients = input(f"Please update the ingredients of {selected_cocktail.name}")
-        update_method = input(f"Please update the method for {selected_cocktail.name}")
-    except ValueError:
-        print("Update not successful. Please try again.")
+        update_name = input(f"Please update the name of {selected_cocktail.name}: ")
+        update_ingredients = input(f"Please update the ingredients of {selected_cocktail.name}: ")
+        update_method = input(f"Please update the method for {selected_cocktail.name}: ")
 
         selected_cocktail.name = update_name
         selected_cocktail.ingredients = update_ingredients
@@ -170,3 +191,6 @@ def update_a_cocktail(name, ingredients, method):
         selected_cocktail.update()
 
         print(f"{selected_cocktail.name} has been updated successfully!")
+
+    except ValueError:
+        print("Update not successful. Please try again.")

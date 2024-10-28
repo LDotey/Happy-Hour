@@ -49,8 +49,8 @@ class Alcohol:
         sql = '''
             CREATE TABLE IF NOT EXISTS alcohols (
             id INTEGER PRIMARY KEY, 
-            type_of TEXT
-            brand TEXT
+            type_of TEXT,
+            brand TEXT,
             proof INTEGER)
             '''
         CURSOR.execute(sql)
@@ -85,10 +85,10 @@ class Alcohol:
     def update(self):
         sql = '''
             UPDATE alcohols
-            SET type_of =?, brand = ?, proof = ?
+            SET type_of = ?, brand = ?, proof = ?
             WHERE id = ?
             '''
-        CURSOR.execute(sql, (self.type_of, self.brand, self.proof))
+        CURSOR.execute(sql, (self.type_of, self.brand, self.proof, self.id))
         CONN.commit()
 
     def delete(self):

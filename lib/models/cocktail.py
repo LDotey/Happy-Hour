@@ -60,13 +60,13 @@ class Cocktail:
     def create_table(cls):
         """Create a new table to persist the attributes of Cocktail instances"""
         sql = '''
-            CREATE TABLE IF NOT EXISTS cocktails
+            CREATE TABLE IF NOT EXISTS cocktails (
             id INTEGER PRIMARY KEY,
             name TEXT, 
             ingredients TEXT, 
-            method TEXT
+            method TEXT,
             alcohol_id INTEGER, 
-            FOREIGN KEY (alcohol_id) REFERENCES alcohols(id)
+            FOREIGN KEY (alcohol_id) REFERENCES alcohols(id))
             '''
         CURSOR.execute(sql)
         CONN.commit()
@@ -168,3 +168,13 @@ class Cocktail:
             '''
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def find_by_alcohol(cls, alcohol_id):
+        sql = '''
+            SELECT *
+            FROM cocktails
+            WHERE alcohol_id = ?
+            '''
+        rows = CURSOR.execute(sql, (alcohol_id,)).fetchall()
+        return [cls.instance_from_db(row) for row in rows]  # Return a list of Cocktail instances
