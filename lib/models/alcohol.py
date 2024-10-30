@@ -1,6 +1,7 @@
 from models.__init__ import CURSOR, CONN
 
 
+
 class Alcohol:
 
     all = {}
@@ -151,4 +152,20 @@ class Alcohol:
         
         row = CURSOR.execute(sql, (type_of,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    def cocktails(self):
+                    
+                    from models.cocktail import Cocktail
+                    return Cocktail.find_by_alcohol(self.id)
+                   
+                    # return self.find_by_alcohol()
+                   
+                    # sql = '''
+                    #     SELECT *
+                    #     FROM cocktails
+                    #     WHERE alcohol_id = ?
+                    #     '''
+                    # rows = CURSOR.execute(sql, (self.id,)).fetchall()
+                    # return [self.instance_from_db(row) for row in rows]  # Return a list of Cocktail instances
+
     

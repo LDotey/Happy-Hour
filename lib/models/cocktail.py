@@ -178,3 +178,14 @@ class Cocktail:
             '''
         rows = CURSOR.execute(sql, (alcohol_id,)).fetchall()
         return [cls.instance_from_db(row) for row in rows]  # Return a list of Cocktail instances
+
+    # def find_by_alcohol(self):
+    #         sql = '''
+    #             SELECT *
+    #             FROM cocktails
+    #             WHERE alcohol_id = ?
+    #             '''
+    #         rows = CURSOR.execute(sql, (alcohol_id,)).fetchall()
+    #         return [cls.instance_from_db(row) for row in rows]  # Return a list of Cocktail instances
+    
+  
