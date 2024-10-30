@@ -91,11 +91,15 @@ def delete_an_alcohol():
         print(f"{i}. {alcohol.type_of} | Brand: {alcohol.brand} | Proof: {alcohol.proof}%")
 
     try:
-        delete_alcohol = int(input("Please enter the alcohol # that you would like to delete"))
+        delete_alcohol = int(input("Please enter the alcohol # that you would like to delete: "))
         if 1<= delete_alcohol <= len(all_alcohols):
             selected_alcohol = all_alcohols[delete_alcohol -1]
+
+            delete_cocktails_by_alcohol(selected_alcohol)
+
             selected_alcohol.delete()
             print(f"{selected_alcohol.type_of} has been deleted")
+
         else:
             print("Please try again")
     except ValueError:
@@ -105,6 +109,7 @@ def update_an_alcohol():
     all_alcohols = Alcohol.get_all()
     for i, alcohol in enumerate(all_alcohols, start=1):
         print(f"{i}. {alcohol.type_of} | Brand: {alcohol.brand} | Proof: {alcohol.proof}%")
+        
 
     try:
         update_alcohol = int(input("Which alcohol would you like to update?: "))
@@ -151,7 +156,10 @@ def list_all_cocktails():
                 return None
             if 1 <= choice <= len(all_cocktails):
                 selected_cocktail = Cocktail.find_by_id(all_cocktails[choice -1].id)
-                formatted_cocktail = f"{selected_cocktail.name}\n{selected_cocktail.ingredients}\n{selected_cocktail.method}"
+                formatted_cocktail = f"""\n * {selected_cocktail.name}
+                                        \n * {selected_cocktail.ingredients}
+                                        \n * {selected_cocktail.method}
+                                        \n"""
                 print(formatted_cocktail)
             else:
                 print("Invalid choice. Please try again. ")
@@ -163,7 +171,9 @@ def list_all_cocktails_by_alcohol(alcohol):
     all_cocktails = alcohol.cocktails()
     if all_cocktails:
         for i, cocktail in enumerate(all_cocktails, start = 1):
-            print(f"{i}. {cocktail.name}")
+            print(f"""\n {i}. {cocktail.name}
+                    \n {cocktail.ingredients}
+                    \n {cocktail.method}""")
     else:
             print ("None found for this alcohol.")
     return all_cocktails
@@ -229,7 +239,7 @@ def delete_a_cocktail(selected_alcohol):
         if confirm.lower() == 'y':
             selected_cocktail.delete()
             print(f"The cocktail '{selected_cocktail.name}' has been deleted.")
-            delete_alcohol_if_no_cocktails(selected_alcohol)
+            # delete_alcohol_if_no_cocktails(selected_alcohol)
         else:
             print("Deletion canceled.")
         
@@ -261,16 +271,14 @@ def update_a_cocktail():
     except ValueError:
         print("Update not successful. Please try again.")
 
-def delete_alcohol_if_no_cocktails(selected_alcohol):
-    all_cocktails = selected_alcohol.cocktails()
+def delete_cocktails_by_alcohol(selected_alcohol):
 
-    if not all_cocktails:
-        selected_alcohol.delete()
-        print(f"{selected_alcohol.type_of} has been deleted because there are no remaining {selected_alcohol.type_of} cocktails")
-    else:
-        print(f"{selected_alcohol.type_of} can not be deleted because there are still {selected_alcohol.type_of} cocktails remaining.")
-
-
+    all_cocktails = Cocktail.find_by_alcohol(selected_alcohol.id)
+    for cocktail in all_cocktails:
+        cocktail.delete()
+        print("")
+        print(f"{cocktail.name} has been deleted.")
+        print("")
 
 
 
@@ -294,3 +302,21 @@ def delete_alcohol_if_no_cocktails(selected_alcohol):
 #     print(alcohol) if alcohol else print(
 #         f"Alcohol {type_of} not found")
     
+
+# def delete_alcohol_if_no_cocktails(selected_alcohol):
+#     all_cocktails = selected_alcohol.cocktails()
+
+#     if not all_cocktails:
+#         selected_alcohol.delete()
+#         print(f"{selected_alcohol.type_of} has been deleted because there are no remaining {selected_alcohol.type_of} cocktails")
+#     else:
+#         print(f"{selected_alcohol.type_of} can not be deleted because there are still {selected_alcohol.type_of} cocktails remaining.")
+
+# def delete_cocktails_if_no_alcohol(selected_alcohol):
+#     all_cocktails = selected_alcohol.cocktails()
+#     if all_cocktails:
+#         for cocktail in all_cocktails:
+#             cocktail.delete()
+#             print(f"All {selected_alcohol.type_of} cocktails have been deleted")
+    # selected_alcohol.delete()
+    # print(f"")
