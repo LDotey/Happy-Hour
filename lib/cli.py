@@ -34,14 +34,6 @@ def main():
             update_an_alcohol()
         elif choice == "5":
             list_all_cocktails()
-        # elif choice == "6":
-        #     list_cocktails_for_selected_alcohol()
-        # elif choice == "7":
-        #     add_a_cocktail()
-        # elif choice == "8":
-        #     delete_a_cocktail()
-        # elif choice == "9":
-        #     update_a_cocktail()
 
         else:
             print("Invalid choice")

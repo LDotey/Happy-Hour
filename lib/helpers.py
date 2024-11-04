@@ -60,7 +60,7 @@ def alcohol_menu():
         elif cocktail_choice == "3":
             delete_a_cocktail(selected_alcohol)
         elif cocktail_choice == "4":
-            update_a_cocktail()
+            update_a_cocktail(selected_alcohol)
         elif cocktail_choice == "5":
             alcohol_menu()
         else:
@@ -91,7 +91,7 @@ def delete_an_alcohol():
         print(f"{i}. {alcohol.type_of} | Brand: {alcohol.brand} | Proof: {alcohol.proof}%")
 
     try:
-        delete_alcohol = int(input("Please enter the alcohol # that you would like to delete: "))
+        delete_alcohol = int(input("\nWhich alcohol would you like to delete: "))
         if 1<= delete_alcohol <= len(all_alcohols):
             selected_alcohol = all_alcohols[delete_alcohol -1]
 
@@ -108,11 +108,11 @@ def delete_an_alcohol():
 def update_an_alcohol():
     all_alcohols = Alcohol.get_all()
     for i, alcohol in enumerate(all_alcohols, start=1):
-        print(f"{i}. {alcohol.type_of} | Brand: {alcohol.brand} | Proof: {alcohol.proof}%")
+        print(f"\n{i}. {alcohol.type_of} | Brand: {alcohol.brand} | Proof: {alcohol.proof}%")
         
 
     try:
-        update_alcohol = int(input("Which alcohol would you like to update?: "))
+        update_alcohol = int(input("\nWhich alcohol would you like to update?: "))
     except ValueError:
         print("Proof must be a number")
         return
@@ -199,23 +199,23 @@ def list_cocktails_for_selected_alcohol():
     except (IndexError, ValueError):
         print("Invalid selection. Please try again.")
 
-def add_a_cocktail():
-    alcohol_menu()
+def add_a_cocktail(selected_alcohol):
+    # alcohol_menu()
 
-    alcohol_index = input("Please enter the number of the alcohol you want to use:")
+    # alcohol_index = input("Please enter the number of the alcohol you want to use:")
 
-    try:
-        alcohol_index = int(alcohol_index) -1
-        all_alcohols = Alcohol.get_all()
+    # try:
+    #     alcohol_index = int(alcohol_index) -1
+    #     all_alcohols = Alcohol.get_all()
 
-        if 0 <= alcohol_index < len(all_alcohols):
-            selected_alcohol = all_alcohols[alcohol_index]
-        else:
-            print("Invalid selection. Please try again.")
-            return
-    except ValueError:
-        print("Please enter a valid number")
-        return
+    #     if 0 <= alcohol_index < len(all_alcohols):
+    #         selected_alcohol = all_alcohols[alcohol_index]
+    #     else:
+    #         print("Invalid selection. Please try again.")
+    #         return
+    # except ValueError:
+    #     print("Please enter a valid number")
+    #     return
 
     name = input("Please enter the name of the cocktail: ")
     ingredients = input("Please enter the ingredients: ")
@@ -246,13 +246,19 @@ def delete_a_cocktail(selected_alcohol):
     except(ValueError, IndexError):
         print("Invalid selection. Please try again.")
 
-def update_a_cocktail():
+def update_a_cocktail(selected_alcohol):
 
-    all_cocktails = list_all_cocktails()
+    # all_cocktails = list_all_cocktails()
+    all_cocktails = selected_alcohol.cocktails()
+    if all_cocktails:
+        for i, cocktail in enumerate(all_cocktails, start = 1):
+            print(f"{i}. {cocktail.name}")
+
 
     try:
         update_cocktail_index = int(input("Select the number of the cocktail you'd like to update: "))
         selected_cocktail = all_cocktails[update_cocktail_index -1]
+        # breakpoint()
     except ValueError:
         print("Invalid selection. Please try again.")
         return
